@@ -1,0 +1,30 @@
+
+
+main{display:flex;
+    justify-content: center;}
+
+h1 {text-align: center;}
+
+#app {display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height:80vh;
+    min-width: 600px;
+    border: 2px solid grey;
+    background-color: cadetblue;
+    border-radius: 5px;}
+
+.inputruta, .knappdiv {display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding:2rem;
+    margin-top:1rem;
+}
+
+input {padding:1.5rem;}
+
+button {margin: 0 auto;
+    font-size: 1em;
+    padding: 1rem;
+    width:150px;}

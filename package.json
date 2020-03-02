@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "js1-ex3",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,5 +30,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
+    "node-sass": "^4.13.1"
   }
 }
