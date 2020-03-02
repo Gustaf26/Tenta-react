@@ -1,6 +1,7 @@
 import React from 'react';
 import SearchCity from './components/SearchCity';
 import WeatherReport from './components/WeatherReport';
+import Weathercondtions from './components/weatherconditions'
 import axios from 'axios'
 
 class App extends React.Component {
@@ -10,6 +11,8 @@ class App extends React.Component {
     temp:"",
     city:"",
     humi:"",
+    initcity:"",
+    conditions:""
     
   }
 
@@ -17,28 +20,30 @@ class App extends React.Component {
     
     axios.get(`http://api.openweathermap.org/data/2.5/weather?q=Lund&appid=a9f6719e37f20890ebff5d91724dec1f`)
       .then(res => {
-        let t;
-        t = Math.floor(res.data.main.temp -273)
-        this.setState({city:'Lund', report:true, humi: res.data.main.humidity, temp: t})
-        const persons = res.data;
-        console.log(persons)
+        let y = Math.floor(res.data.main.temp -273)
+        this.setState({city:'Lund', report:true, humi: res.data.main.humidity, temp: y, initcity: "", conditions: res.data.weather[0].description})
+        
       })
   }
   
-  searchcity = (e, city) => {
+  searchcity = (e) => {
 
     e.preventDefault()
 
-    this.setState({city: city})
-
-    axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=a9f6719e37f20890ebff5d91724dec1f`)
+    axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${this.state.initcity}&appid=a9f6719e37f20890ebff5d91724dec1f`)
           .then(res=>
 
-            {let t;
-             t = Math.floor(res.data.main.temp -273)
-            this.setState({report:true, humi: res.data.main.humidity, temp: t})
-            })
-  
+            {let t = Math.floor(res.data.main.temp -273)
+            this.setState({humi: res.data.main.humidity, temp: t, conditions: res.data.weather[0].description})
+            }).catch(err=>{this.setState({report: false})})
+      this.setState({city: this.state.initcity, report:true})
+      this.setState({initcity: ""})
+  }
+
+  updatevalue = (e) => {
+
+    this.setState({initcity: e.target.value})
+    
   }
 
 	render() {
@@ -51,14 +56,17 @@ class App extends React.Component {
               <span role="img" aria-label="Weather?">🌦❔</span>
             </h1>
 
-            <SearchCity search={this.searchcity}/>
+            <SearchCity search={this.searchcity} city={this.state.city} update={this.updatevalue} init={this.state.initcity}/>
+            
 
             {
               this.state.report
-              ? (
-                <WeatherReport cit={this.state.city} hum={this.state.humi} temp={this.state.temp}/>
+              ? (<div>
+                  <WeatherReport cit={this.state.city} hum={this.state.humi} temp={this.state.temp}/>
+                  <Weathercondtions cit={this.state.city} cond={this.state.conditions}/>
+                </div>
               )
-              : ''
+              : <div>SORRY YOUR CITY DOESN´T SEEM TO EXIST</div>
             }
             </div>
 			  </div>
